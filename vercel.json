@@ -8,6 +8,10 @@
     ],
     "routes": [
         {
+            "src": "/blog/(.*)",
+            "dest": "manage.py"
+        },
+        {
             "src": "/(.*)",
             "dest": "manage.py"
         }
