@@ -62,3 +62,8 @@ def delete(request, article_id):
             'article': article,
         }
         return render(request, 'blog/delete.html', params)
+
+from django.shortcuts import redirect
+
+def home(request):
+    return redirect('index')
