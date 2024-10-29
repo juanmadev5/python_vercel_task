@@ -13,16 +13,18 @@ def index(request):
 
 
 def create(request):
-    if (request.method == 'POST'):
-        obj = Article()
-        article = ArticleForm(request.POST, instance=obj)
-        article.save()
-        return redirect('index')
+    if request.method == 'POST':
+        article_form = ArticleForm(request.POST)
+        if article_form.is_valid(): 
+            article_form.save()
+            return redirect('index')
     else:
-        params = {
-            'form': ArticleForm(),
-        }
-        return render(request, 'blog/create.html', params)
+        article_form = ArticleForm()
+
+    params = {
+        'form': article_form,
+    }
+    return render(request, 'blog/create.html', params)
 
 
 def detail(request, article_id):
@@ -35,16 +37,19 @@ def detail(request, article_id):
 
 def edit(request, article_id):
     article = Article.objects.get(id=article_id)
-    if (request.method == 'POST'):
-        article = ArticleForm(request.POST, instance=article)
-        article.save()
-        return redirect('detail', article_id)
+    if request.method == 'POST':
+        article_form = ArticleForm(request.POST, instance=article)
+        if article_form.is_valid():
+            article_form.save()
+            return redirect('detail', article_id)
     else:
-        params = {
-            'article': article,
-            'form': ArticleForm(instance=article),
-        }
-        return render(request, 'blog/edit.html', params)
+        article_form = ArticleForm(instance=article)
+
+    params = {
+        'article': article,
+        'form': article_form,
+    }
+    return render(request, 'blog/edit.html', params)
 
 
 def delete(request, article_id):
